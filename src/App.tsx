@@ -1,10 +1,9 @@
 import './App.css';
+import GetAllUsers from './Views/GetAllUsers/GetAllUsers';
 
 function App() {
   return (
-    <div className="App">
-      <div>Hello</div>
-    </div>
+    <GetAllUsers />
   );
 }
 
