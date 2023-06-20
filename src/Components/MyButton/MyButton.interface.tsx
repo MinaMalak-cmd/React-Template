@@ -1,3 +1,3 @@
 export interface IMyButtton {
-    variant: string;
+    variant?: string;
 }

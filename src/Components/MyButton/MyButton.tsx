@@ -3,7 +3,7 @@ import { IMyButtton } from "./MyButton.interface";
 
 const MyButton:FC<IMyButtton> = ({variant}) => {
     return ( 
-        <div>Hello</div>
+        <div className="button-wrapper">Hello</div>
      );
 }
  
