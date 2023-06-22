@@ -17,7 +17,10 @@ const useGetAllUsers = () => {
     useEffect(() => {
         getUsers();
     }, []);
-
+    useEffect(() => {
+      setValidated(false);
+    }, [addedItem])
+    
     const handleInputChange = (key:string, value:string|number) =>{
         setAddedItem({
           ...addedItem,
