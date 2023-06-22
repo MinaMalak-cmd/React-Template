@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { deleteRequest, get, post } from "../../Services/httpMethods";
+import { deleteRequest, get, post, update } from "../../Services/httpMethods";
 
 const useGetAllUsers = () => {
     const [users, setUsers] = useState([]);
     const [deletedItem, setDeletedItem] = useState(NaN);
-    const [updatedItem, setUpdatedItem] = useState<any>();
     const [showToast, setShowToast] = useState(false);
     const [validated, setValidated] = useState(false);
+    const [mode, setMode] = useState("Add");
     const [addedItem, setAddedItem] = useState({
         id: 0,
         name: "",
@@ -42,34 +42,55 @@ const useGetAllUsers = () => {
             if(response){
                 setShowToast(true);
             }
-            setAddedItem({
-                id: 0,
-                name: "",
-                email: "",
-                password: "",
-                age:NaN
-            });
+            resetHandler();
+            getUsers();
+        }
+    }
+    const updateUser = async() =>{
+        if(addedItem.name){
+            const response = await update(`/user/${addedItem.id}`, addedItem);
+            if(response){
+                setShowToast(true);
+            }
+            resetHandler();
             getUsers();
         }
     }
     const handleSubmit = () => {
-        addUser();
+        if(mode === "Update"){
+            updateUser();
+        }
+        else{
+            addUser();
+        }
         setValidated(true);
     };
+    const resetHandler = () => {
+        setAddedItem({
+            id: 0,
+            name: "",
+            email: "",
+            password: "",
+            age:NaN
+        });
+        setMode("Add");
+    }
     return {
         users,
         setDeletedItem,
         deletedItem,
         deleteUser,
-        setUpdatedItem,
-        updatedItem,
         showToast, 
         setShowToast,
         validated,
         setValidated, 
         handleSubmit,
         handleInputChange,
-        addedItem
+        addedItem,
+        mode, 
+        setMode,
+        resetHandler,
+        setAddedItem
     };
 }
  
