@@ -1,9 +1,12 @@
-import { loadFull } from "tsparticles";
-import Particles from "react-tsparticles";
-
-import particles from "../../Assets/animations/particles.json";
 import useGetAllUsers from "./useGetAllUsers";
-import { ButtonGroup, Modal, Toast, ToastContainer } from "react-bootstrap";
+import {
+  ButtonGroup,
+  Form,
+  Modal,
+  Toast,
+  ToastContainer,
+  Card,
+} from "react-bootstrap";
 
 const GetAllUsers = () => {
   const {
@@ -13,20 +16,16 @@ const GetAllUsers = () => {
     deleteUser,
     setUpdatedItem,
     updatedItem,
-    showToast, 
-    setShowToast
+    showToast,
+    setShowToast,
+    validated,
+    setValidated,
+    handleSubmit,
+    handleInputChange,
+    addedItem,
   } = useGetAllUsers();
   return (
     <>
-      {/* <Particles 
-        id="tsparticles" 
-        // init={particlesInit} 
-        // loaded={particlesLoaded} 
-        particles={particles}
-        options={{ 
-          fpsLimit: 60, 
-        }} 
-      />  */}
       <div className="container-fluid py-3 px-3">
         <div className="row">
           <div className="col-sm-12">
@@ -72,13 +71,19 @@ const GetAllUsers = () => {
           </div>
         </div>
         <div className="row">
-          <Modal show={deletedItem? true : false} onHide={() => setDeletedItem(NaN)}>
+          <Modal
+            show={deletedItem ? true : false}
+            onHide={() => setDeletedItem(NaN)}
+          >
             <Modal.Header closeButton>
               <Modal.Title>Delete Item</Modal.Title>
             </Modal.Header>
             <Modal.Body>Are you sure you want to delete this item ?</Modal.Body>
             <Modal.Footer>
-              <button className="btn btn-secondary" onClick={() => setDeletedItem(NaN)}>
+              <button
+                className="btn btn-secondary"
+                onClick={() => setDeletedItem(NaN)}
+              >
                 Close
               </button>
               <button className="btn btn-primary" onClick={deleteUser}>
@@ -88,11 +93,97 @@ const GetAllUsers = () => {
           </Modal>
         </div>
         <div className="row">
-            <ToastContainer className="bottom-end">
-              <Toast onClose={() => setShowToast(false)} show={showToast} delay={3000} autohide bg="primary">
-                <Toast.Body className="text-white">your request done successfully</Toast.Body>
-              </Toast>
-            </ToastContainer>
+          <ToastContainer className="bottom-end">
+            <Toast
+              onClose={() => setShowToast(false)}
+              show={showToast}
+              delay={3000}
+              autohide
+              bg="primary"
+            >
+              <Toast.Body className="text-white">
+                your request done successfully
+              </Toast.Body>
+            </Toast>
+          </ToastContainer>
+        </div>
+        <div className="row mt-2">
+          <div className="col-sm-12">
+            <Card bg="info" text="dark" className="mb-2 ">
+              <Card.Header>
+                {updatedItem ? "Update User" : "Add User"}
+              </Card.Header>
+              <Card.Body>
+                <Card.Title>
+                  {updatedItem ? "Update User" : "Add User"}
+                </Card.Title>
+                <Card.Text>
+                  <Form
+                    autoComplete="false"
+                    noValidate
+                    validated={validated}
+                    onSubmit={handleSubmit}
+                  >
+                    <Form.Group className="mb-3" controlId="user.ControlInput1">
+                      <Form.Label>Name</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Enter your name"
+                        required
+                        onChange={(e: any) =>
+                          handleInputChange("name", e?.target.value)
+                        }
+                        value={addedItem.name}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        Please Enter user name.
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="user.ControlInput2">
+                      <Form.Label>Email address</Form.Label>
+                      <Form.Control
+                        type="email"
+                        placeholder="Enter your email"
+                        onChange={(e: any) =>
+                          handleInputChange("email", e?.target.value)
+                        }
+                        value={addedItem.email}
+                      />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="user.ControlInput3">
+                      <Form.Label>Password</Form.Label>
+                      <Form.Control
+                        type="password"
+                        placeholder="Enter password"
+                        onChange={(e: any) =>
+                          handleInputChange("password", e?.target.value)
+                        }
+                        value={addedItem.password}
+                      />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="user.ControlInput4">
+                      <Form.Label>Age</Form.Label>
+                      <Form.Control
+                        type="number"
+                        placeholder="Enter your Age"
+                        onChange={(e: any) =>
+                          handleInputChange("age", e?.target.value)
+                        }
+                        value={addedItem.age}
+                      />
+                    </Form.Group>
+                    <button
+                      className="btn btn-danger"
+                      type="button"
+                      onClick={handleSubmit}
+                    >
+                      {updatedItem ? "Update User" : "Add User"}
+                    </button>
+                  </Form>
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          </div>
         </div>
       </div>
     </>
