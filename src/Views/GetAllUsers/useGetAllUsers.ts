@@ -5,7 +5,8 @@ const useGetAllUsers = () => {
     const [users, setUsers] = useState([]);
     const [deletedItem, setDeletedItem] = useState(NaN);
     const [updatedItem, setUpdatedItem] = useState<any>();
-    console.log("🚀 ~ file: useGetAllUsers.ts:8 ~ useGetAllUsers ~ updatedItem:", updatedItem, deletedItem)
+    const [showToast, setShowToast] = useState(false);
+
     useEffect(() => {
         getUsers();
     }, []);
@@ -15,8 +16,10 @@ const useGetAllUsers = () => {
         setUsers(response?.data.result);
     }
     const deleteUser = async() =>{
-        // const response = await deleteRequest(`/user/${deletedItem}`);
-        console.log("🚀 ~ file: useGetAllUsers.ts:18 ~ deleteUser ~ deletedItem:", deletedItem);
+        const response = await deleteRequest(`/user/${deletedItem}`);
+        if(response){
+            setShowToast(true);
+        }
         setDeletedItem(NaN);
         getUsers();
     }
@@ -26,7 +29,9 @@ const useGetAllUsers = () => {
         deletedItem,
         deleteUser,
         setUpdatedItem,
-        updatedItem
+        updatedItem,
+        showToast, 
+        setShowToast
     };
 }
  

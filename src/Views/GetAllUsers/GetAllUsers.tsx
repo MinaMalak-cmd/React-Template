@@ -1,15 +1,24 @@
-import { loadFull } from "tsparticles"; 
-import Particles from "react-tsparticles"; 
+import { loadFull } from "tsparticles";
+import Particles from "react-tsparticles";
 
 import particles from "../../Assets/animations/particles.json";
 import useGetAllUsers from "./useGetAllUsers";
-import {ButtonGroup} from "react-bootstrap";
+import { ButtonGroup, Modal, Toast, ToastContainer } from "react-bootstrap";
 
 const GetAllUsers = () => {
-  const { users, setDeletedItem, deletedItem, deleteUser, setUpdatedItem, updatedItem } = useGetAllUsers();
+  const {
+    users,
+    setDeletedItem,
+    deletedItem,
+    deleteUser,
+    setUpdatedItem,
+    updatedItem,
+    showToast, 
+    setShowToast
+  } = useGetAllUsers();
   return (
     <>
-       {/* <Particles 
+      {/* <Particles 
         id="tsparticles" 
         // init={particlesInit} 
         // loaded={particlesLoaded} 
@@ -21,7 +30,7 @@ const GetAllUsers = () => {
       <div className="container-fluid py-3 px-3">
         <div className="row">
           <div className="col-sm-12">
-            <table className="table table-dark table-striped table-bordered table-hover">
+            <table className="table table-primary table-striped table-bordered table-hover">
               <thead>
                 <tr>
                   <th>id</th>
@@ -32,7 +41,7 @@ const GetAllUsers = () => {
                 </tr>
               </thead>
               <tbody>
-                {users.map((user: any) => {
+                {users?.map((user: any) => {
                   return (
                     <tr key={user.id}>
                       <td>{user.id}</td>
@@ -40,10 +49,20 @@ const GetAllUsers = () => {
                       <td>{user.email}</td>
                       <td>{user.age}</td>
                       <td>
-                      <div aria-label="user table actions" className="d-flex">
-                        <button className="btn btn-primary" onClick={() => setUpdatedItem(user)}>Update</button>
-                        <button className="btn btn-danger mx-2" onClick={() => setDeletedItem(user.id)}>Delete</button>
-                      </div>
+                        <div aria-label="user table actions" className="d-flex">
+                          <button
+                            className="btn btn-primary"
+                            onClick={() => setUpdatedItem(user)}
+                          >
+                            Update
+                          </button>
+                          <button
+                            className="btn btn-danger mx-2"
+                            onClick={() => setDeletedItem(user.id)}
+                          >
+                            Delete
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   );
@@ -51,6 +70,29 @@ const GetAllUsers = () => {
               </tbody>
             </table>
           </div>
+        </div>
+        <div className="row">
+          <Modal show={deletedItem? true : false} onHide={() => setDeletedItem(NaN)}>
+            <Modal.Header closeButton>
+              <Modal.Title>Delete Item</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>Are you sure you want to delete this item ?</Modal.Body>
+            <Modal.Footer>
+              <button className="btn btn-secondary" onClick={() => setDeletedItem(NaN)}>
+                Close
+              </button>
+              <button className="btn btn-primary" onClick={deleteUser}>
+                Save Changes
+              </button>
+            </Modal.Footer>
+          </Modal>
+        </div>
+        <div className="row">
+            <ToastContainer className="bottom-end">
+              <Toast onClose={() => setShowToast(false)} show={showToast} delay={3000} autohide bg="primary">
+                <Toast.Body className="text-white">your request done successfully</Toast.Body>
+              </Toast>
+            </ToastContainer>
         </div>
       </div>
     </>
